@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "67e834bd374d3f3ff63eaf6f"
+  },
+  "email": "phanminhtai23@gmail.com",
+  "full_name": "Phan Minh Tài",
+  "role": "admin",
+  "password": "$2b$12$T9xw0Zda2bPhCWMjToIcVOzK.iBBozt138I.i/fWQzOCbiQznpmDK"
+},
+{
+  "_id": {
+    "$oid": "67e83511374d3f3ff63eaf73"
+  },
+  "email": "testuser3@gmail.com",
+  "full_name": "testuser3",
+  "role": "user",
+  "password": "$2b$12$cdgdWCVdrUiYYmKyaShAXOXAhozW8RnE3lcT6Z1/C6N1eoXtvpbkO"
+}]
