@@ -30,7 +30,8 @@ mongoimport --uri "your mongodb uri" --db your_database_name --collection tokens
 ```
 ---
 ## Tải dự án
-```git clone https://github.com/phanminhtai23/DDIs-Management
+```bash
+git clone https://github.com/phanminhtai23/DDIs-Management
 cd DDIs-Management
 ```
 
