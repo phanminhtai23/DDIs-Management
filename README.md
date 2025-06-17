@@ -62,8 +62,8 @@ REFRESH_TOKEN_EXPIRE_DAYS=7
 GEMINI_API_KEY="your gemini api, get on https://aistudio.google.com/apikey"
 ```
 ### 3. Khởi chạy server
-``` bash
 Sao chép mã
+``` bash
 uvicorn app.main:app --reload
 API chạy tại http://127.0.0.1:8015
 ```
