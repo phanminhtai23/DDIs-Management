@@ -12,7 +12,7 @@ fast-api/.env
 /.pnp
 .pnp.js
 
-*/.env
+**/.env
 fast-api/.env
 # testing
 /coverage

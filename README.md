@@ -102,3 +102,5 @@ Mở Browser bất kỳ vào link **127.0.0.1:3002/admin/auth/login** để đă
 - 🔑 **Dự án sử dụng [Gemini API](https://aistudio.google.com/apikey)** từ Google để trích xuất dữ liệu từ ảnh và PDF. Bạn cần tạo API Key tại trang Aistudio.
 ---
 
+## LICENSE [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)  
+Mã nguồn tuân theo giấy phép MIT, chi tiết đọc file LICENSE
