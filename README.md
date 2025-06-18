@@ -10,7 +10,7 @@ Niên luận ngành Khoa học Máy tính
 
 Hệ thống giúp người dùng:
 - ✅ Tra cứu thông tin thuốc và tương tác giữa các loại thuốc
-- ✅ Quản lý thông tin thuốc & cặp tương tác (Admin)
+- ✅ Quản lý thông tin của hơn 10.000 loại thuốc & hơn 22.000 cặp tương tác (Admin)
 - ✅ Trích xuất thông tin thuốc tự động từ ảnh/PDF dùng AI (YOLOv11, CRAFT, Gemini)
 
 Công nghệ sử dụng:
