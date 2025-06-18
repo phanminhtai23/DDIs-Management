@@ -3,7 +3,6 @@
 Niên luận ngành Khoa học Máy tính  
 **Sinh viên thực hiện:** Phan Minh Tài  
 **GVHD:** TS. Lưu Tiến Đạo
-
 ---
 
 ## 🧠 Giới thiệu
@@ -14,9 +13,18 @@ Hệ thống giúp người dùng:
 - ✅ Trích xuất thông tin thuốc tự động từ ảnh/PDF dùng AI (YOLOv11, CRAFT, Gemini)
 
 Công nghệ sử dụng:
-- Frontend: `React`, `Tailwind CSS`
-- Backend: `FastAPI`, `MongoDB`
-- AI: `YOLOv11s-Seg`, `CRAFT`, `Gemini API`
+## Frontend
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+## Backend
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+
+## AI
+![YOLOv11s-Seg](https://img.shields.io/badge/YOLOv11-47A248?style=for-the-badge&logo=tensorflow&logoColor=white)
+![CRAFT](https://img.shields.io/badge/CRAFT-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Gemini_API-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
 ---
 
@@ -65,7 +73,7 @@ GEMINI_API_KEY="your gemini api, get on https://aistudio.google.com/apikey"
 Sao chép mã
 ``` bash
 uvicorn app.main:app --reload
-API chạy tại http://127.0.0.1:8015
+# API chạy tại http://127.0.0.1:8015
 ```
 ---
 ## 💻 Cài đặt Frontend (React)
