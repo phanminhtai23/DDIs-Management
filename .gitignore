@@ -6,11 +6,14 @@
 .pnp.js
 
 /fast-api/ai_models
+fast-api/.env
 /fast-api/node_modules
 /my-react-app/node_modules
 /.pnp
 .pnp.js
 
+*/.env
+fast-api/.env
 # testing
 /coverage
 
