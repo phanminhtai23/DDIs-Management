@@ -3,6 +3,7 @@
 Niên luận ngành Khoa học Máy tính  
 **Sinh viên thực hiện:** Phan Minh Tài  
 **GVHD:** TS. Lưu Tiến Đạo
+
 ---
 
 ## 🧠 Giới thiệu
@@ -22,7 +23,7 @@ Công nghệ sử dụng:
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
 ## AI
-![YOLOv11s-Seg](https://img.shields.io/badge/YOLOv11-47A248?style=for-the-badge&logo=tensorflow&logoColor=white)
+![YOLOv11](https://img.shields.io/badge/YOLOv11-47A248?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![CRAFT](https://img.shields.io/badge/CRAFT-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Gemini_API-4285F4?style=for-the-badge&logo=google&logoColor=white)
 
