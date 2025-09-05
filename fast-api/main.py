@@ -6,21 +6,37 @@ from routes.ddi import router as ddi_router
 import uvicorn
 from config import HOST, PORT
 from fastapi.middleware.cors import CORSMiddleware
+from database import test_database_connection
+from contextlib import asynccontextmanager
 
 origins = [
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://127.0.0.1",
-    "http://127.0.0.1:3001",
-    "http://localhost:3001",
     "http://127.0.0.1:3002",
-    "http://127.0.0.1:3003",
-    "http://127.0.0.1:3004",
-    "http://127.0.0.1:3005",
+    "http://localhost:3002",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "*",
 ]
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    print("🚀 Starting FastAPI server...")
+    print("=" * 50)
+    success = await test_database_connection()
+    print("=" * 50)
+    if success:
+        print("💚 Ready to serve requests!")
+    else:
+        print("💔 Starting with database issues!")
+    
+    yield
+    
+    # Shutdown
+    print("👋 Shutting down FastAPI server...")
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

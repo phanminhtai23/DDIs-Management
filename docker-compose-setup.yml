@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6
+    container_name: ddis-mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=ddis_management
+    volumes:
+      - ./data:/data/db
+      - ./data:/data/import  # Để import dữ liệu
+    networks:
+      - ddis-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # FastAPI Backend
+  fastapi:
+    build: 
+      context: ./fast-api
+      dockerfile: Dockerfile
+    image: minhtai03/ddis-backend:1.0
+    container_name: ddis-backend
+    restart: unless-stopped
+    ports:
+      - "8015:8015"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - DATABASE_NAME=ddis_management
+      - HOST=0.0.0.0
+      - PORT=8015
+      - DEBUG=True
+    env_file:
+      - ./fast-api/.env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - ddis-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8015/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./react-ui
+      dockerfile: Dockerfile
+      args:                                    # ← THÊM BUILD ARGS
+      - REACT_APP_BASE_BACKEND_URL=http://localhost:8015
+    image: minhtai03/ddis-frontend:1.0
+    container_name: ddis-frontend
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - REACT_APP_BASE_BACKEND_URL=http://localhost:8015  # Từ browser gọi đến host
+    env_file:
+      - ./react-ui/.env
+    depends_on:
+      fastapi:
+        condition: service_healthy
+    networks:
+      - ddis-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3002/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# Custom network để các container communicate
+networks:
+  ddis-network:
+    driver: bridge
+    name: ddis-network
+
+# Volumes để persist data
+volumes:
+  mongodb_data:
+    driver: local

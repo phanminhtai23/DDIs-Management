@@ -1,5 +1,5 @@
 # routes/ddi.py
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from utils.security import get_current_user
 from utils.generate_id_for_DDIs import generate_id
 from database import ddi_collection
@@ -8,6 +8,7 @@ from schemas.urls import ExtractRequest
 import requests
 import io
 import PIL.Image
+import math
 
 router = APIRouter()
 
@@ -15,13 +16,36 @@ from ai_models.ai_models import AI_Models
 AI_Models = AI_Models()
 AI_Models.load_models()
 
-# Lất tất cả các cặp tương tác thuốc
+# Lấy tương tác thuốc với phân trang và tìm kiếm
 @router.get("/")
-async def get_all_ddis(user: dict = Depends(get_current_user)):
+async def get_all_ddis(
+    page: int = Query(1, ge=1, description="Số trang"),
+    limit: int = Query(20, ge=1, le=100, description="Số items mỗi trang"),
+    search: str = Query("", description="Tìm kiếm theo hoạt chất"),
+    user: dict = Depends(get_current_user)
+):
     if not user:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    ddis = await ddi_collection.find().to_list()
+    # Tạo filter query cho tìm kiếm
+    filter_query = {}
+    if search.strip():
+        filter_query = {
+            "$or": [
+                {"HoatChat_1": {"$regex": search, "$options": "i"}},
+                {"HoatChat_2": {"$regex": search, "$options": "i"}},
+                {"MucDoNghiemTrong": {"$regex": search, "$options": "i"}}
+            ]
+        }
+
+    # Tính toán skip
+    skip = (page - 1) * limit
+
+    # Lấy tổng số documents
+    total = await ddi_collection.count_documents(filter_query)
+    
+    # Lấy ddis với phân trang
+    ddis = await ddi_collection.find(filter_query).skip(skip).limit(limit).to_list()
 
     # Filter and validate ddi
     valid_ddis = []
@@ -31,7 +55,21 @@ async def get_all_ddis(user: dict = Depends(get_current_user)):
         except Exception as e:
             print(f"Validation error: {e}, skipping invalid ddi: {ddi}")
 
-    return {"message": "Got DDIs successfully", "ddi": valid_ddis}
+    # Tính tổng số trang
+    total_pages = math.ceil(total / limit) if total > 0 else 1
+
+    return {
+        "message": "Got DDIs successfully", 
+        "ddi": valid_ddis,
+        "pagination": {
+            "total": total,
+            "page": page,
+            "limit": limit,
+            "total_pages": total_pages,
+            "has_next": page < total_pages,
+            "has_prev": page > 1
+        }
+    }
 
 
 # Thêm một file tương tác

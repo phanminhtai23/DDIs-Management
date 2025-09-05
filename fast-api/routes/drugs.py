@@ -1,5 +1,5 @@
 # routes/drugs.py
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from utils.security import get_current_user
 from database import drugs_collection
 from schemas.drug import Drug
@@ -7,6 +7,7 @@ from schemas.urls import ExtractRequest
 import requests
 import io
 import PIL.Image
+import math
 
 router = APIRouter()
 
@@ -14,14 +15,37 @@ from ai_models.ai_models import AI_Models
 AI_Models = AI_Models()
 AI_Models.load_models()
 
-# Lất tất cả các thuốc /drugs
+# Lấy thuốc với phân trang và tìm kiếm /drugs
 @router.get("/")
-async def get_all_drugs(user: dict = Depends(get_current_user)):
+async def get_all_drugs(
+    page: int = Query(1, ge=1, description="Số trang"),
+    limit: int = Query(20, ge=1, le=100, description="Số items mỗi trang"),
+    search: str = Query("", description="Tìm kiếm theo tên thuốc hoặc công ty"),
+    user: dict = Depends(get_current_user)
+):
     if not user:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
-    drugs = await drugs_collection.find().to_list()
-    # print("drugs: ", drugs)
+    # Tạo filter query cho tìm kiếm
+    filter_query = {}
+    if search.strip():
+        filter_query = {
+            "$or": [
+                {"tenThuoc": {"$regex": search, "$options": "i"}},
+                {"congTySx": {"$regex": search, "$options": "i"}},
+                {"nuocSx": {"$regex": search, "$options": "i"}}
+            ]
+        }
+
+    # Tính toán skip
+    skip = (page - 1) * limit
+
+    # Lấy tổng số documents
+    total = await drugs_collection.count_documents(filter_query)
+    
+    # Lấy drugs với phân trang
+    drugs = await drugs_collection.find(filter_query).skip(skip).limit(limit).to_list()
+    
     # Filter and validate drugs
     valid_drugs = []
     for drug in drugs:
@@ -30,9 +54,21 @@ async def get_all_drugs(user: dict = Depends(get_current_user)):
         except Exception as e:
             print(f"Validation error: {e}, skipping invalid drug: {drug}")
 
-    # print("valid_drugs: ", valid_drugs)
-    return {"message": "Got drugs successfully", "drugs": valid_drugs}
-    # return {"message": "Got drugs successfully", "drugs": drugs}
+    # Tính tổng số trang
+    total_pages = math.ceil(total / limit) if total > 0 else 1
+
+    return {
+        "message": "Got drugs successfully", 
+        "drugs": valid_drugs,
+        "pagination": {
+            "total": total,
+            "page": page,
+            "limit": limit,
+            "total_pages": total_pages,
+            "has_next": page < total_pages,
+            "has_prev": page > 1
+        }
+    }
 
 
 # Thêm một thuốc mới

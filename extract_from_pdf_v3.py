@@ -1,15 +1,11 @@
+
 import json
 import requests
-from icecream import ic
-# KEY API Gemini
-import icecream as ic
 import google.generativeai as genai
 import re
 import json
 import base64
 import re
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
 import httpx
 
 
