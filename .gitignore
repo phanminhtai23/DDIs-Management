@@ -9,6 +9,7 @@ data/
 !data/*.json
 *.h5
 *.pth
+*.pt
 
 fast-api/node_modules
 /my-react-app/node_modules
