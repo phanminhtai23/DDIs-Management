@@ -7,13 +7,13 @@ __pycache__/
 .pnp.js
 data/
 !data/*.json
-
+*.h5
+*.pth
 
 fast-api/node_modules
 /my-react-app/node_modules
 /.pnp
 .pnp.js
-/fast-api/ai_models
 
 **/__pycache__
 **/**/__pycache__
