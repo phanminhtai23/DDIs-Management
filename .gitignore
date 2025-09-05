@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-fast-api/__pycache__/
+fast-api/__pycache__
+__pycache__/
 # dependencies
 */node_modules
 /.pnp
@@ -8,12 +9,14 @@ data/
 !data/*.json
 
 
-/fast-api/.env
-/fast-api/node_modules
+fast-api/node_modules
 /my-react-app/node_modules
 /.pnp
 .pnp.js
+/fast-api/ai_models
 
+**/__pycache__
+**/**/__pycache__
 **/venv/
 **/.env
 # testing
